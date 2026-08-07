@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yue — Designer Portfolio Preview</title>
+  <meta name="description" content="A playful, minimal portfolio preview for an independent designer." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&display=swap');
+    :root {
+      --ink: #171717;
+      --muted: #77736d;
+      --paper: #ffffff;
+      --line: #deded8;
+      --content-max: 1700px;
+      --lime: #d6f36a;
+      --pink: #ffb6d8;
+      --blue: #b6d8ff;
+      --orange: #ffbf68;
+      --lavender: #d8c9ff;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+    }
+    body::before {
+      opacity: .32;
+      mix-blend-mode: multiply;
+      background: url("assets/texture.jpg") center / cover repeat;
+    }
+    body::after {
+      opacity: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1000 700' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23b9a88c' stroke-opacity='.28'%3E%3Cpath d='M-30 170 C190 125 290 220 520 150 S820 105 1030 185'/%3E%3Cpath d='M-40 510 C170 465 340 560 555 492 S830 455 1040 530'/%3E%3Cpath d='M170 -20 C225 145 170 300 240 720'/%3E%3Cpath d='M780 -20 C720 150 805 310 740 720'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    body.gallery-open { overflow: hidden; }
+
+    .page-shell { overflow: hidden; }
+    .topline { display: none; }
+    .eyebrow { color: var(--muted); }
+    .hero {
+      min-height: 91vh;
+      padding: 9vh 8vw 13vh;
+      position: relative;
+      display: grid;
+      align-items: center;
+      text-align: center;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .hero-inner { max-width: 1000px; position: relative; z-index: 4; margin: 0 auto; }
+    .hero-trail { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    .hero-trail-image { position: absolute; width: clamp(110px, 14vw, 190px); aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; opacity: .94; transform: translate(-50%, -50%) scale(.76) rotate(var(--tilt)); animation: heroTrailShrink .58s cubic-bezier(.22,.61,.36,1) forwards; will-change: transform, opacity; backface-visibility: hidden; }
+    @keyframes heroTrailShrink { 0% { opacity: .94; transform: translate(-50%, -50%) scale(.76) rotate(var(--tilt)); } 16% { opacity: .94; transform: translate(-50%, -50%) scale(1) rotate(var(--tilt)); } 78% { opacity: .94; transform: translate(-50%, -50%) scale(1) rotate(var(--tilt)); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(var(--tilt)); } }
+    .sticker-image { cursor: pointer; position: relative; z-index: 3; }
+    .masonry-modal { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 30px; visibility: hidden; opacity: 0; pointer-events: none; transition: opacity .25s ease, visibility .25s ease; }
+    .masonry-modal.is-open { visibility: visible; opacity: 1; pointer-events: auto; }
+    .masonry-backdrop { position: absolute; inset: 0; background: rgba(255,255,255,.70); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); }
+    .masonry-dialog { position: relative; width: min(1180px, 100%); height: min(82vh, 820px); overflow: auto; padding: 28px; background: rgba(255,255,255,.70); backdrop-filter: blur(14px) saturate(115%); -webkit-backdrop-filter: blur(14px) saturate(115%); border: 1px solid rgba(255,255,255,.82); border-radius: 18px; box-shadow: 0 24px 70px rgba(23,23,23,.14), inset 0 1px 0 rgba(255,255,255,.75); }
+    .masonry-dialog h3 { margin: 0 0 22px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 30px; }
+    .masonry-close { position: absolute; top: 18px; right: 20px; width: 34px; height: 34px; border: 1px solid var(--ink); border-radius: 50%; background: #fff; cursor: pointer; font-size: 20px; line-height: 1; }
+    .masonry-grid { columns: 4 190px; column-gap: 14px; }
+    .masonry-card { display: block; width: 100%; border: 0; padding: 0; background: transparent; text-align: left; break-inside: avoid; margin: 0 0 14px; cursor: zoom-in; opacity: 0; transform: translateY(34px) scale(.96); animation: masonryIn .65s cubic-bezier(.22,.61,.36,1) forwards; }
+    .masonry-card img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 24px rgba(23,23,23,.1); transition: transform .25s ease; }
+    .masonry-card:hover img { transform: scale(.97); }
+    @keyframes masonryIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+    .image-viewer { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 30px; background: rgba(23,23,23,.72); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s ease, visibility .2s ease; }
+    .image-viewer.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .image-viewer img { max-width: min(90vw, 1100px); max-height: 88vh; object-fit: contain; border-radius: 12px; box-shadow: 0 20px 70px rgba(0,0,0,.3); }
+    .image-viewer-close { position: fixed; top: 22px; right: 26px; color: #fff; background: transparent; border: 0; font-size: 34px; cursor: pointer; }
+    .hero h1 {
+      font-size: clamp(34px, 4.6vw, 68px);
+      line-height: .96;
+      letter-spacing: .02em;
+      font-weight: 700;
+      max-width: none;
+      margin: 0;
+      font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", "DFKai-SB", cursive;
+    }
+    .hero h1 em { font-style: normal; color: var(--ink); }
+    .hero-meta { display: none; }
+    .status-dot {
+      width: 12px; height: 12px; border-radius: 50%; background: var(--lime);
+      border: 2px solid var(--ink); flex: 0 0 auto;
+    }
+    .hero-art { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; max-width: 860px; margin: 62px auto 0; }
+    .sticky-note { min-height: 158px; padding: 24px 22px; display: flex; align-items: center; justify-content: center; font-family: "KaiTi", "STKaiti", cursive; font-size: 25px; line-height: 1.1; color: var(--ink); box-shadow: 5px 7px 0 rgba(23,23,23,.06); }
+    .sticky-note:nth-child(1) { background: var(--pink); transform: rotate(-4deg); }
+    .sticky-note:nth-child(2) { background: var(--lime); transform: rotate(3deg) translateY(10px); }
+    .sticky-note:nth-child(3) { background: var(--blue); transform: rotate(-2deg) translateY(-4px); }
+    .sticky-note:nth-child(4) { background: var(--orange); transform: rotate(5deg) translateY(8px); }
+    .hero-art { position: relative; inset: auto; z-index: 1; display: flex; align-items: flex-start; justify-content: center; gap: 14px; width: min(960px, 100%); max-width: 960px; margin: 62px auto 0; }
+    .sticker-image { width: 22%; aspect-ratio: 1 / 1; display: block; object-fit: contain; background: transparent; filter: drop-shadow(4px 7px 0 rgba(23,23,23,.08)); transition: transform .3s ease; }
+    .sticker-image:hover { transform: translateY(-8px) rotate(0deg); }
+    .sticker-camera { background-image: url("assets/sticker-camera.png"); transform: rotate(-4deg); clip-path: none; }
+    .sticker-medal { background-image: url("assets/sticker-medal.png"); transform: rotate(3deg) translateY(18px); }
+    .sticker-cup { background-image: url("assets/sticker-cup.png"); transform: rotate(-2deg) translateY(6px); }
+    .sticker-cat { background-image: url("assets/sticker-cat.png"); transform: rotate(5deg) translateY(22px); clip-path: polygon(0 0, 100% 0, 100% 84%, 94% 84%, 94% 100%, 0 100%); }
+    .sticker-image { background-image: none !important; }
+
+    main { padding-bottom: 140px; }
+    .section { max-width: var(--content-max); margin: 0 auto; padding: 120px 8vw; border-top: 1px solid var(--line); }
+    .section-head {
+      display: block; text-align: center; margin-bottom: 54px;
+    }
+    .section-label { font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", cursive; font-size: 18px; letter-spacing: .04em; color: var(--muted); }
+    h2 { font-size: clamp(50px, 8vw, 104px); letter-spacing: .02em; line-height: .95; margin: 10px 0 0; font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", cursive; font-weight: 700; }
+    .section-note { max-width: 420px; margin: 20px auto 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .project-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 24px; margin: -20px auto 48px; font-family: "Patrick Hand", "KaiTi", cursive; font-size: 17px; }
+    .project-filters span::before { content: "✦"; margin-right: 8px; font-size: 11px; }
+    .work-grid { display: grid; gap: 42px; }
+    .project-card { display: block; }
+    .project-art {
+      aspect-ratio: 2.25 / 1; border-radius: var(--radius); overflow: hidden; position: relative;
+      display: grid; place-items: center; transition: transform .35s ease;
+    }
+    .project-card:hover .project-art { transform: translateY(-8px) rotate(-1deg); }
+    .art-lime { background: var(--lime); }
+    .art-orange { background: var(--orange); }
+    .art-blue { background: var(--blue); }
+    .art-lavender { background: var(--lavender); }
+    .project-art svg { width: 72%; height: 72%; overflow: visible; }
+    .project-info { display: grid; grid-template-columns: minmax(160px, .5fr) 1fr auto; gap: 24px; align-items: start; margin-top: 14px; }
+    .project-info::after { content: "See full case ↗"; font-family: "Caveat", cursive; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; white-space: nowrap; }
+    .project-title { font-size: 18px; }
+    .project-type { font-size: 12px; color: var(--muted); padding-top: 3px; }
+    .project-description { font-size: 13px; color: var(--muted); line-height: 1.45; max-width: 360px; }
+    .project-link { font-family: "Caveat", cursive; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+    .work-grid { display: none; }
+    .project-grid-v2 { display: grid; gap: 78px; }
+    .project-row { display: grid; grid-template-columns: minmax(250px, .9fr) minmax(260px, 1fr); gap: 36px 6vw; padding-top: 34px; border-top: 1px solid var(--ink); }
+    .project-copy h3 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(32px, 3.6vw, 56px); line-height: .98; margin: 0 0 16px; font-weight: 700; }
+    .project-intro { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 18px; line-height: 1.35; margin: 0; max-width: 450px; }
+    .project-details { display: grid; grid-template-columns: 1fr; gap: 24px; padding-top: 5px; max-width: 600px; }
+    .project-details p { font-size: 14px; line-height: 1.65; margin: 0; max-width: 600px; }
+    .project-details p:nth-child(2) { display: none; }
+    #work .project-row:nth-child(4) .project-details { display: none; }
+    .project-gallery { grid-column: 1 / -1; display: block; overflow: hidden; position: relative; }
+    .project-gallery-track { display: flex; width: max-content; gap: 6px; animation: projectGallerySlide 24s linear infinite; will-change: transform; }
+    .project-gallery:hover .project-gallery-track { animation-play-state: paused; }
+    .gallery-tile { flex: 0 0 clamp(220px, 24vw, 360px); min-height: 250px; border-radius: 14px; padding: 16px; display: flex; align-items: end; font-size: 12px; color: var(--ink); background: var(--blue); }
+    .project-image-tile { overflow: hidden; height: clamp(260px, 28vw, 420px); min-height: 0; padding: 0; align-items: center; background: #fff; }
+    .project-image-tile img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+    @keyframes projectGallerySlide { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 3px)); } }
+    .tile-pink { background: #ffd1dc; }
+    .tile-orange { background: #ffbf68; }
+    .tile-blue { background: #b6d8ff; }
+    .tile-lime { background: #d6f36a; }
+    .tile-lavender { background: #d8c9ff; }
+    .tile-yellow { background: #ffe27a; }
+    .about-layout { display: none; }
+    .about-board { display: grid; grid-template-columns: 1.15fr .72fr 1fr; grid-template-rows: auto auto auto; gap: 18px; position: relative; max-width: 1280px; margin: 0 auto; }
+    .about-board > div { min-height: 180px; border-radius: 12px; padding: 28px; position: relative; overflow: visible; }
+    .about-board h3 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 28px; line-height: 1; margin: 0 0 18px; }
+    .about-board p { font-size: 14px; line-height: 1.45; max-width: 360px; margin: 0 0 14px; }
+    .about-black { background: #171717; color: #fff; grid-column: 1 / 3; grid-row: 1 / 3; min-height: 350px !important; padding: 44px !important; }
+    .about-black h3 { font-size: clamp(36px, 5vw, 74px); max-width: 520px; }
+    .about-black p { max-width: 500px; color: rgba(255,255,255,.78); }
+    .about-green { background: #39b84a; grid-column: 1; grid-row: 3; }
+    .about-red { background: #ff2b31; grid-column: 3; grid-row: 1 / 3; min-height: 350px !important; display: grid; place-items: center; transform: rotate(-4deg); z-index: 2; }
+    .photo-placeholder { width: 72%; aspect-ratio: .78; background: #ff6d65; border: 2px solid var(--ink); display: grid; place-items: center; text-align: center; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 30px; line-height: .9; }
+    .paperclip { position: absolute; width: 34px; height: 112px; border: 6px solid #ffd1dc; border-bottom: 0; border-radius: 20px 20px 0 0; left: 14%; top: -34px; transform: rotate(-12deg); }
+    .about-yellow { background: #ffe27a; grid-column: 2; grid-row: 3; display: flex; flex-wrap: wrap; align-content: center; gap: 10px; }
+    .about-yellow span { background: #fff3b5; border-radius: 999px; padding: 10px 14px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 17px; }
+    .about-purple { background: #6c35a5; color: #fff; grid-column: 3; grid-row: 3; }
+    .about-purple p { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 25px; line-height: 1.05; }
+    .about-blue { background: #2faae0; grid-column: 1 / 3; grid-row: 4; min-height: 170px !important; }
+    .about-blue h3 { margin-bottom: 10px; }
+    .board-kicker, .board-date { display: block; font-size: 11px; letter-spacing: .08em; margin-bottom: 20px; }
+    .board-date { margin: 24px 0 0; }
+    #work .section-note, #about .section-note { display: none; }
+    .about-board { display: none; }
+    .about-v3 { max-width: 1280px; margin: 0 auto; }
+    .about-v3-top { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(320px, 1.2fr); gap: 7vw; align-items: center; }
+    .about-v3-photo { width: 100%; max-width: 430px; aspect-ratio: .82; background: #ff2b31 url("assets/profile.jpg") center / cover no-repeat; display: block; position: relative; transform: rotate(-3deg); border: 2px solid var(--ink); z-index: 1; }
+    .about-v3-photo::before { content: none; }
+    .about-v3-copy { max-width: 650px; min-height: 260px; }
+    .about-v3-copy p { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(26px, 3.3vw, 48px); line-height: 1.08; margin: 0 0 28px; }
+    .about-v3-copy p + p { color: var(--muted); font-family: Arial, "Microsoft YaHei", sans-serif; font-size: 16px; line-height: 1.55; max-width: 460px; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 24px; }
+    .about-tags span { border: 1px solid var(--ink); border-radius: 999px; padding: 8px 13px; font-size: 12px; }
+    .tag-enfp { background: #fbd0df; }
+    .tag-sagittarius { background: #fef5be; }
+    .tag-animals { background: #c3f2fe; }
+    .self-evaluation-title { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 22px; line-height: 1; margin: 0 0 12px; }
+    .about-v3-copy p.about-bio { width: min(600px, 100%); max-width: 600px; font-family: "Inter Variable", Arial, sans-serif; font-size: 13px !important; line-height: 1.8; letter-spacing: .08em; word-spacing: .08em; background: #ffffff; margin: 0 0 28px; overflow: visible; display: block; }
+    .about-bio:focus, .about-fact p:focus { background: #ffffff; }
+    .about-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .about-fact { border-top: 1px solid var(--ink); padding-top: 12px; }
+    .about-fact h4 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 22px; margin: 0 0 12px; }
+    .about-fact p { font-size: 13px; line-height: 1.5; margin: 0; outline: none; }
+    .about-facts .about-fact:first-child p { max-width: 160px; font-family: "Inter Variable", Arial, sans-serif; }
+    .about-v3-images { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 54px; position: relative; }
+    .about-v3-image { width: 100%; aspect-ratio: 1.25 / 1; display: block; object-fit: cover; border-radius: 12px; }
+    .about-v3-images .image-c > .about-v3-image { object-fit: contain; object-position: center; padding: 14px; background: #fff; }
+    .about-image-frame { position: relative; width: 100%; aspect-ratio: 1.25 / 1; overflow: hidden; border-radius: 12px; background: #ffffff; }
+    .about-image-frame::after { display: none; }
+    .blue-logo { position: absolute; left: 2%; top: 50%; width: 96%; height: auto; max-height: none; object-fit: contain; transform: translateY(-50%); z-index: 2; }
+    .internship-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; transition: opacity .35s ease, transform .45s cubic-bezier(.22, 1, .36, 1); }
+    .internship-trigger:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; border-radius: 12px; }
+    .internship-trigger.is-active { transform: translateX(10px) scale(.98); }
+    .about-v3-images.has-detail .internship-trigger:not(.is-active) { opacity: .18; transform: scale(.96); pointer-events: none; }
+    .internship-detail { position: absolute; z-index: 5; inset: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, .8fr); gap: 24px; align-items: stretch; padding: 24px; border: 1px solid rgba(17, 17, 17, .18); border-radius: 16px; background: rgba(255, 255, 255, .94); box-shadow: 0 18px 46px rgba(17, 17, 17, .16); opacity: 0; pointer-events: none; transform: translateY(20px) scale(.97); transition: opacity .35s ease, transform .5s cubic-bezier(.22, 1, .36, 1); }
+    .internship-detail.is-open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .internship-detail-copy { min-width: 0; align-self: center; }
+    .internship-detail-copy h5 { margin: 0 0 10px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(22px, 2vw, 32px); line-height: 1.05; }
+    .internship-detail-copy .internship-time { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
+    .internship-detail-copy p { margin: 0; font-family: "Inter Variable", Arial, sans-serif; font-size: 13px; line-height: 1.75; letter-spacing: .02em; }
+    .internship-detail-visual { min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 12px; background: #fff; }
+    .internship-detail-image { display: block; width: 300px; height: 180px; max-width: 100%; object-fit: contain; transform: translateX(70px) scale(.82); opacity: 0; transition: transform .65s cubic-bezier(.22, 1, .36, 1), opacity .35s ease .12s; }
+    .internship-detail.is-open .internship-detail-image { transform: translateX(0) scale(1); opacity: 1; }
+    .internship-detail-close { position: absolute; top: 10px; right: 12px; z-index: 2; width: 30px; height: 30px; border: 1px solid rgba(17, 17, 17, .3); border-radius: 50%; background: #fff; color: var(--ink); cursor: pointer; font-size: 18px; line-height: 1; }
+    .tool-grid { display: grid; gap: 12px; }
+    .tool-row { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+    .tool-row-label { width: 100%; font-family: "Inter Variable", Arial, sans-serif; font-size: 13px; line-height: 1.3; margin-bottom: 2px; }
+    .tool-icon { min-width: 34px; min-height: 30px; padding: 7px 9px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .01em; }
+    .tool-row:first-child .tool-icon { background: #fbd0df; color: #171717; }
+    .tool-row:nth-child(2) .tool-icon { background: #b6d8ff; color: #171717; }
+    .ps { background: #1e5b88; }.ai { background: #3d936f; }.davinci { background: #1d6e84; }.jianying { background: #111; }.blender { background: #e67e22; }.drone { background: #8a5a44; }
+    .chatgpt { background: #111; }.codex { background: #4d6f9f; }.deepsider { background: #6d48a2; }.lovart { background: #e76f51; }.tapnow { background: #df4f8c; }.jimeng { background: #335cdb; }
+    .image-a { background: #b6d8ff; }
+    .image-b { background: #d6f36a; }
+    .image-c { background: #ffffff !important; }
+    .ip-section { text-align: center; }
+    .ip-placeholder { width: min(82vw, 920px); aspect-ratio: 1.8 / 1; margin: 30px auto 0; border: 0; border-radius: 0; display: grid; place-items: center; background: transparent; }
+    .ip-placeholder img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .ip-placeholder span { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 28px; }
+    .ip-section .section-head { display: none; }
+    .ip-placeholder span { display: none; }
+
+    .about-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(220px, .65fr); gap: 10vw; }
+    .about-copy { font-size: clamp(26px, 3.6vw, 52px); letter-spacing: -.04em; line-height: 1.1; margin: 0; }
+    .about-copy span { color: var(--muted); }
+    .resume-list { border-top: 1px solid var(--line); }
+    .resume-row { display: grid; grid-template-columns: 82px 1fr; gap: 14px; border-bottom: 1px solid var(--line); padding: 15px 0; font-size: 13px; line-height: 1.45; }
+    .resume-year { color: var(--muted); }
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .skill { border: 1px solid var(--ink); border-radius: 999px; padding: 8px 12px; font-size: 12px; }
+
+    .contact-section { padding-bottom: 180px; }
+    .contact-wrap { display: flex; justify-content: space-between; align-items: end; gap: 40px; }
+    .contact-title { max-width: 760px; }
+    .contact-title h2 { margin-bottom: 22px; }
+    .contact-title p { color: var(--muted); max-width: 370px; line-height: 1.5; font-size: 14px; }
+    .contact-links { display: grid; gap: 10px; min-width: 220px; }
+    .contact-link { border-bottom: 1px solid var(--ink); padding: 12px 0; display: flex; justify-content: space-between; font-size: 14px; }
+    .contact-link span:last-child { font-size: 18px; transition: transform .25s ease; }
+    .contact-link:hover span:last-child { transform: translate(4px, -4px); }
+
+    .dock {
+      position: fixed; z-index: 10; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 3px; padding: 5px; border: 1px solid var(--ink); border-radius: 999px;
+      width: 340px; min-width: 0; justify-content: space-around; background: rgba(255,255,255,.34); backdrop-filter: blur(16px) saturate(120%); box-shadow: 0 7px 24px rgba(0,0,0,.08);
+    }
+    .dock a { padding: 7px 10px; border-radius: 999px; white-space: nowrap; font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", cursive; font-size: 13px; transition: background .2s ease; }
+    .dock a:hover, .dock a.active { background: #FFD1DC; color: var(--ink); }
+    .dock a { transform-origin: center bottom; transform: translateY(0) scale(1); will-change: transform; }
+    .click-spark-canvas { position: fixed; inset: 0; z-index: 30; width: 100vw; height: 100vh; display: block; pointer-events: none; user-select: none; }
+    .footer { max-width: var(--content-max); margin: 0 auto; padding: 22px 8vw; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+    #about .about-layout { display: none !important; }
+    #about .about-board { display: none !important; }
+    .contact-wrap { display: block; text-align: center; }
+    .contact-title { max-width: 760px; margin: 0 auto; }
+    .contact-title p { margin-left: auto; margin-right: auto; }
+    .contact-links { max-width: 360px; margin: 48px auto 0; }
+
+    @media (max-width: 700px) {
+      .topline { padding: 18px 5vw; }
+      .hero { min-height: 88vh; padding: 5vh 7vw 14vh; }
+      .hero h1 { font-size: clamp(34px, 10.8vw, 64px); white-space: normal; }
+      .hero-art { gap: 10px; margin-top: 48px; }
+      .sticky-note { min-height: 100px; padding: 14px 8px; font-size: 17px; }
+      .section { padding: 82px 7vw; }
+      .section-head, .contact-wrap { display: block; }
+      .section-note { margin-top: 18px; }
+      .work-grid, .about-layout { grid-template-columns: 1fr; gap: 36px; }
+      .project-art { aspect-ratio: 1.3 / 1; }
+      .project-info { grid-template-columns: 1fr auto; gap: 8px 14px; }
+      .project-info::after { grid-column: 2; grid-row: 1; }
+      .project-type { grid-column: 1; grid-row: 2; }
+      .project-row { display: block; }
+      .project-details { grid-template-columns: 1fr; gap: 10px; margin-top: 22px; }
+      .project-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 26px; }
+      .gallery-tile { min-height: 150px; }
+      .about-board { display: block; }
+      .about-board > div { min-height: 180px; margin-bottom: 14px; }
+      .about-black, .about-red { min-height: 300px !important; }
+      .about-red { transform: rotate(-2deg); }
+      .about-blue { min-height: 190px !important; }
+      .about-v3-top { grid-template-columns: 1fr; gap: 34px; }
+      .about-v3-photo { max-width: 340px; margin: 0 auto; }
+      .about-v3-images { grid-template-columns: 1fr; }
+      .internship-detail { grid-template-columns: 1fr; overflow-y: auto; }
+      .internship-detail-visual { min-height: 180px; }
+      .about-facts { grid-template-columns: 1fr; gap: 22px; }
+      .about-copy { font-size: 31px; }
+      .resume-list { margin-top: 10px; }
+      .contact-links { margin-top: 44px; }
+      .dock { bottom: 12px; width: 300px; min-width: 0; justify-content: space-around; }
+      .dock a { padding: 10px 14px; }
+      .footer { padding: 18px 7vw; }
+    }
+    @media (min-width: 701px) {
+      .hero h1 { white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topline"><span>YUE / PORTFOLIO</span><span>2024—2026</span></div>
+    <header class="hero" id="top">
+      <div class="hero-inner">
+        <h1>Welcome to Ying Junyan's website.<br /><em>Have a pleasant day</em></h1>
+        <div class="hero-meta"><span>Independent designer · visual storyteller · Shanghai</span></div>
+      </div>
+      <div class="hero-trail" aria-hidden="true"></div>
+      <div class="hero-art" aria-label="Sticker placeholders">
+        <img class="sticker-image sticker-camera" data-gallery="0" src="assets/sticker-camera.png" alt="Camera illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-medal" data-gallery="1" src="assets/sticker-medal.png" alt="Medal illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-cup" data-gallery="2" src="assets/sticker-cup.png" alt="Milk tea illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-cat" data-gallery="3" src="assets/sticker-cat.png" alt="Cat illustration, open photo gallery" tabindex="0" />
+      </div>
+    </header>
+    <div class="masonry-modal" id="photo-gallery" aria-hidden="true">
+      <div class="masonry-backdrop" data-close-gallery></div>
+      <div class="masonry-dialog" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+        <button class="masonry-close" type="button" aria-label="Close gallery" data-close-gallery>×</button>
+        <h3 id="gallery-title">Selected moments</h3>
+        <div class="masonry-grid" id="gallery-grid"></div>
+      </div>
+    </div>
+    <div class="image-viewer" id="image-viewer" aria-hidden="true">
+      <button class="image-viewer-close" type="button" aria-label="Close image">×</button>
+      <img id="image-viewer-img" alt="" />
+    </div>
+
+    <main>
+      <section class="section" id="work">
+        <div class="section-head"><div><div class="section-label">01 / Selected projects</div><h2>Project</h2></div><p class="section-note">一些项目、练习和正在发生的事情。图片和文案都是可替换占位。</p></div>
+        <div class="project-filters"><span>Account operation data</span><span>Pet Adoption Day1</span><span>Pet Adoption Day2</span><span>Other</span></div>
+        <div class="work-grid">
+          <a class="project-card" href="#contact"><div class="project-art art-lime"><svg viewBox="0 0 240 180" aria-hidden="true"><rect x="25" y="25" width="190" height="130" rx="6" fill="#171717"/><circle cx="84" cy="90" r="38" fill="#ffb6d8"/><path d="M130 54h52M130 74h36M130 94h48M130 114h25" stroke="#f8f8f5" stroke-width="7" stroke-linecap="round"/></svg></div><div class="project-info"><span class="project-title">Momo Studio</span><span class="project-type">Brand identity<br />2025</span></div></a>
+          <a class="project-card" href="#contact"><div class="project-art art-orange"><svg viewBox="0 0 240 180" aria-hidden="true"><path d="M34 42h172v96H34z" fill="#b6d8ff" stroke="#171717" stroke-width="5"/><path d="M53 59h134v62H53z" fill="#fff" stroke="#171717" stroke-width="3"/><path d="M68 104c19-30 29 7 47-15s27-28 53-4" fill="none" stroke="#ff7d53" stroke-width="8" stroke-linecap="round"/><circle cx="85" cy="78" r="8" fill="#d6f36a" stroke="#171717" stroke-width="3"/></svg></div><div class="project-info"><span class="project-title">Daylight Journal</span><span class="project-type">Editorial website<br />2024</span></div></a>
+          <a class="project-card" href="#contact"><div class="project-art art-blue"><svg viewBox="0 0 240 180" aria-hidden="true"><path d="M44 32h152v116H44z" fill="#fff" stroke="#171717" stroke-width="5"/><path d="M63 53h113" stroke="#171717" stroke-width="5"/><path d="M63 75h57M63 91h86M63 107h43" stroke="#77736d" stroke-width="5" stroke-linecap="round"/><path d="M140 78c22 0 30 28 4 37-17 6-34-9-20-20 11-9 29 0 21 12" fill="none" stroke="#171717" stroke-width="5"/></svg></div><div class="project-info"><span class="project-title">Loop Objects</span><span class="project-type">Product direction<br />2024</span></div></a>
+          <a class="project-card" href="#contact"><div class="project-art art-lavender"><svg viewBox="0 0 240 180" aria-hidden="true"><path d="M38 134c18-72 50-101 83-84 28 14 49-1 82-18" fill="none" stroke="#171717" stroke-width="5"/><path d="M38 134c36-5 47-26 67-14s46 19 98-18" fill="none" stroke="#ffb6d8" stroke-width="19" stroke-linecap="round"/><circle cx="120" cy="50" r="18" fill="#d6f36a" stroke="#171717" stroke-width="5"/><path d="M95 146h72" stroke="#171717" stroke-width="5" stroke-linecap="round"/></svg></div><div class="project-info"><span class="project-title">Small Signals</span><span class="project-type">Art direction<br />Ongoing</span></div></a>
+        </div>
+        <div class="project-grid-v2">
+          <article class="project-row"><div class="project-copy"><h3>账户运营数据</h3><p class="project-intro">主导潮玩 IP 跨平台账号运营，完成内容生产到数据复盘全流程，通过数据分析迭代内容，小红书单篇最高 35w 曝光，抖音作品获取平台流量现金激励</p></div><div class="project-details"><p>负责潮玩 IP 小红书账号全流程运营，独立完成内容策划、拍摄、AI 素材生成、后期剪辑与数据复盘；笔记单篇最高曝光 35 万，多篇笔记点赞破千。针对封面点击率、5 秒完播率、互动率、平均观看时长等平台诊断指标定位内容问题并迭代优化；同步运营抖音平台，产出作品获得 81.5 万平台流量激励与现金激励，擅长依托数据反向调整内容策略。</p><p>We created the visual language, logo, printed materials and social templates.</p></div><div class="project-gallery"><div class="gallery-tile tile-pink">01 / identity</div><div class="gallery-tile tile-orange">02 / print</div><div class="gallery-tile tile-blue">03 / type</div><div class="gallery-tile tile-lime">04 / social</div></div></article>
+          <article class="project-row"><div class="project-copy"><h3>领养日主kv以及物料1</h3><p class="project-intro">这是一个和国金中心合作的快闪活动</p></div><div class="project-details"><p>我主要负责主kv的制作以及一些物料，所有设计都是使用illustator完成，用比较简单的色块概括了猫猫狗狗的形象。简洁的同时也不缺少趣味。</p><p>From content structure to interaction details, every part is designed to feel light and clear.</p></div><div class="project-gallery"><div class="gallery-tile tile-blue">01 / homepage</div><div class="gallery-tile tile-lavender">02 / article</div><div class="gallery-tile tile-yellow">03 / archive</div><div class="gallery-tile tile-pink">04 / detail</div></div></article>
+          <article class="project-row"><div class="project-copy"><h3>领养日主kv以及物料2</h3><p class="project-intro">展示的图是第115届的，这也是我做的第7届活动视觉了</p></div><div class="project-details"><p>整体画面主要想表达夏日清爽的一种感觉所以是小猫小狗游泳的画面，主视觉的猫狗是领养日的其中两个ip形象。整个设计过程运用了illustrator和ai工具的结合进行的设计</p><p>The identity uses simple shapes and a calm rhythm to make the ordinary feel considered.</p></div><div class="project-gallery"><div class="gallery-tile tile-lime">01 / object</div><div class="gallery-tile tile-blue">02 / detail</div><div class="gallery-tile tile-orange">03 / package</div><div class="gallery-tile tile-lavender">04 / story</div></div></article>
+          <article class="project-row"><div class="project-copy"><h3>其他作品/练习</h3><p class="project-intro">记录其他作品、练习和一些渲染练习</p></div><div class="project-details"><p>Art direction experiments exploring how a small visual signal can carry a whole mood.</p><p>A growing collection of images, marks and playful compositions.</p></div><div class="project-gallery"><div class="gallery-tile tile-orange">01 / image</div><div class="gallery-tile tile-pink">02 / motion</div><div class="gallery-tile tile-blue">03 / color</div><div class="gallery-tile tile-yellow">04 / notes</div></div></article>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-head"><div><div class="section-label">02 / A little more</div><h2>About Me</h2></div><p class="section-note">把这里当作一份不太正式，但信息完整的个人简历。</p></div>
+        <div class="about-layout">
+          <div><p class="about-copy">你好，我是 Yue。<span>我喜欢从一句模糊的话开始，慢慢找到它最准确、最有生命力的样子。</span></p><div class="skills"><span class="skill">Branding</span><span class="skill">Art direction</span><span class="skill">Web design</span><span class="skill">Editorial</span><span class="skill">Creative coding</span></div></div>
+          <div class="resume-list"><div class="resume-row"><span class="resume-year">NOW</span><span>Independent designer<br />Shanghai / Remote</span></div><div class="resume-row"><span class="resume-year">2022—24</span><span>Visual designer<br />A small creative studio</span></div><div class="resume-row"><span class="resume-year">EDU</span><span>Communication Design<br />B.A. / 2018—22</span></div><div class="resume-row"><span class="resume-year">TOOLS</span><span>Figma, Adobe CC, Webflow, HTML / CSS</span></div></div>
+        </div>
+        <div class="about-board">
+          <div class="about-black about-intro-card"><h3>Hi, I’m Ying Junyan.</h3><p>I’m a designer who likes to turn fuzzy ideas into clear, warm and slightly unexpected visual experiences.</p><p>My work moves between brand identity, web design, editorial and the little details that make a project feel alive.</p></div>
+          <div class="about-red about-photo-card"><div class="photo-placeholder">YOUR<br />PHOTO</div><span class="paperclip" aria-hidden="true"></span></div>
+          <div class="about-green about-experience"><span class="board-kicker">INTERNSHIP / EXPERIENCE</span><h3>Creative Studio Intern</h3><p>Supported brand identity, campaign concepts and visual research across several small cultural projects.</p><span class="board-date">2023 — 2024</span></div>
+          <div class="about-yellow about-tags"><span>Branding</span><span>Web design</span><span>Art direction</span></div>
+          <div class="about-purple about-belief"><span class="board-kicker">A NOTE TO MYSELF</span><p>Stay curious. Make room for play. Keep the good idea visible.</p></div>
+          <div class="about-blue about-education"><span class="board-kicker">EDUCATION / SKILLS</span><h3>Communication Design</h3><p>B.A. · 2018 — 2022</p><p>Figma · Adobe CC · Webflow<br />HTML / CSS · Creative coding</p></div>
+        </div>
+        <div class="about-v3">
+          <div class="about-v3-top"><div class="about-v3-photo" role="img" aria-label="Ying Junyan portrait"></div><div class="about-v3-copy"><div class="about-tags"><span class="tag-enfp">ENFP</span><span class="tag-sagittarius">射手座</span><span class="tag-animals">热爱小动物</span></div><h4 class="self-evaluation-title">Self-evaluation</h4><p class="about-bio" contenteditable="true">我叫应君艳，你可以叫我小应，视觉传达专业毕业，熟练掌握各类基础设计软件，具备视觉物料从设计到落地的实操经验，同时拥有潮玩 IP 账号运营实战经历。能够独立完成完整工作链路，覆盖内容策划、实物拍摄、AI 素材生成、后期输出以及数据复盘，搭建闭环个人工作流。工作中思路清晰，善于沟通表达，拥有较强学习能力，面对任务可以主动发现、分析并解决实际问题，做事注重落地实效。性格活泼开朗大方，善于与人协作，能够较好适配团队工作氛围。对待设计与运营工作兼具创意思维与复盘意识，愿意持续吸收新方法。对新鲜事物保持敏感，能快速上手AI工具辅助内容生产。</p><div class="about-facts"><div class="about-fact"><h4>Education</h4><p contenteditable="true">浙江万里学院（2027毕业）视觉传达专业</p></div><div class="about-fact"><h4>Skills</h4><div class="tool-grid"><div class="tool-row"><span class="tool-icon ps">Ps</span><span class="tool-icon ai">Ai</span><span class="tool-icon davinci">DaV</span><span class="tool-icon jianying">剪映</span><span class="tool-icon blender">Bl</span></div><div class="tool-row"><span class="tool-icon chatgpt">ChatGPT</span><span class="tool-icon codex">Codex</span><span class="tool-icon deepsider">deepsider</span><span class="tool-icon lovart">lovart</span><span class="tool-icon tapnow">Tapnow</span><span class="tool-icon jimeng">即梦</span></div></div></div></div></div></div>
+          <div class="about-v3-images" aria-label="实习经历">
+            <button class="internship-trigger image-a" type="button" data-internship="0" aria-label="查看酷乐潮玩实习经历"><img class="about-v3-image" src="assets/about-image-1.jpg" alt="酷乐潮玩项目图" /></button>
+            <button class="internship-trigger image-b" type="button" data-internship="1" aria-label="查看领养日实习经历"><img class="about-v3-image" src="assets/about-image-2.png" alt="领养日项目图" /></button>
+            <button class="internship-trigger image-c" type="button" data-internship="2" aria-label="查看外贸公司实习经历"><img class="about-v3-image" src="assets/company-reference.jpg" alt="金华昭宏工艺品有限公司项目图" /></button>
+            <aside class="internship-detail" id="internship-detail" aria-hidden="true">
+              <button class="internship-detail-close" type="button" aria-label="关闭实习经历">×</button>
+              <div class="internship-detail-copy"><h5 id="internship-title"></h5><p class="internship-time" id="internship-time"></p><p id="internship-copy" contenteditable="true"></p></div>
+              <div class="internship-detail-visual"><img class="internship-detail-image" id="internship-detail-image" src="" alt="" /></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="contact-wrap"><div class="contact-title"><div class="section-label">03 / Say hello</div><h2>Contact</h2><p>下方是我的联系方式，欢迎合作，交换想法或者只是想聊聊，期待您的联系</p></div><div class="contact-links"><a class="contact-link" href="mailto:3318203409@qq.com"><span>Email · 3318203409@qq.com</span><span>↗</span></a><a class="contact-link" href="tel:+8613735671171"><span>Telephone · +86 13735671171</span><span>↗</span></a><a class="contact-link" href="#"><span>Wechat · yjyzhuandaqian / 13735671171</span><span>↗</span></a><a class="contact-link" href="#"><span>QQ · 3318203409</span><span>↗</span></a></div></div>
+      </section>
+      <section class="section ip-section" id="ip">
+        <div class="section-head"><div><div class="section-label">04 / A little character</div><h2>My IP</h2></div><p class="section-note">这里预留给未来的 IP 形象，之后替换成你的图片即可。</p></div>
+        <div class="ip-placeholder"><img src="assets/ip-thanks.png" alt="Thank you illustration" /></div>
+      </section>
+    </main>
+    <footer class="footer"><span>© 2026 Ying Junyan</span><span>Made with curiosity</span></footer>
+    <canvas class="click-spark-canvas" aria-hidden="true"></canvas>
+    <nav class="dock" aria-label="Primary navigation"><a href="#top" class="active">Home</a><a href="#work">Project</a><a href="#about">About Me</a><a href="#contact">Contact</a></nav>
+  </div>
+  <script>
+    const clickSparkCanvas = document.querySelector('.click-spark-canvas');
+    if (clickSparkCanvas) {
+      const clickSparkContext = clickSparkCanvas.getContext('2d');
+      const clickSparks = [];
+      const clickSparkConfig = { color: '#f18ca4', size: 10, radius: 15, count: 8, duration: 400, scale: 1 };
+      let clickSparkFrame = 0;
+      const resizeClickSparkCanvas = () => {
+        const ratio = window.devicePixelRatio || 1;
+        clickSparkCanvas.width = Math.round(window.innerWidth * ratio);
+        clickSparkCanvas.height = Math.round(window.innerHeight * ratio);
+        clickSparkContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+      };
+      const drawClickSparks = timestamp => {
+        clickSparkFrame = 0;
+        clickSparkContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (let index = clickSparks.length - 1; index >= 0; index -= 1) {
+          const spark = clickSparks[index];
+          const progress = (timestamp - spark.startTime) / clickSparkConfig.duration;
+          if (progress >= 1) { clickSparks.splice(index, 1); continue; }
+          const eased = progress * (2 - progress);
+          const distance = eased * clickSparkConfig.radius * clickSparkConfig.scale;
+          const lineLength = clickSparkConfig.size * (1 - eased);
+          const x1 = spark.x + distance * Math.cos(spark.angle);
+          const y1 = spark.y + distance * Math.sin(spark.angle);
+          const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
+          const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
+          clickSparkContext.strokeStyle = clickSparkConfig.color;
+          clickSparkContext.globalAlpha = 1 - eased;
+          clickSparkContext.lineWidth = 2;
+          clickSparkContext.beginPath();
+          clickSparkContext.moveTo(x1, y1);
+          clickSparkContext.lineTo(x2, y2);
+          clickSparkContext.stroke();
+        }
+        clickSparkContext.globalAlpha = 1;
+        if (clickSparks.length) clickSparkFrame = requestAnimationFrame(drawClickSparks);
+      };
+      const resizeObserver = new ResizeObserver(resizeClickSparkCanvas);
+      resizeObserver.observe(document.documentElement);
+      resizeClickSparkCanvas();
+      document.addEventListener('click', event => {
+        const now = performance.now();
+        for (let index = 0; index < clickSparkConfig.count; index += 1) {
+          clickSparks.push({ x: event.clientX, y: event.clientY, angle: (Math.PI * 2 * index) / clickSparkConfig.count, startTime: now });
+        }
+        if (!clickSparkFrame) clickSparkFrame = requestAnimationFrame(drawClickSparks);
+      });
+      window.addEventListener('beforeunload', () => resizeObserver.disconnect(), { once: true });
+    }
+    const dock = document.querySelector('.dock');
+    if (dock) {
+      const dockItems = [...dock.querySelectorAll('a')];
+      const targetScales = dockItems.map(() => 1);
+      const currentScales = dockItems.map(() => 1);
+      let dockPointerX = null;
+      let dockFrame = 0;
+      const animateDock = () => {
+        dockFrame = 0;
+        let isMoving = false;
+        dockItems.forEach((item, index) => {
+          const rect = item.getBoundingClientRect();
+          const distance = dockPointerX === null ? Infinity : Math.abs(dockPointerX - (rect.left + rect.width / 2));
+          const influence = Math.max(0, 1 - distance / 170);
+          targetScales[index] = 1 + influence * .34;
+          currentScales[index] += (targetScales[index] - currentScales[index]) * .2;
+          const scale = currentScales[index];
+          item.style.transform = `translateY(${-(scale - 1) * 13}px) scale(${scale})`;
+          if (Math.abs(targetScales[index] - currentScales[index]) > .002) isMoving = true;
+        });
+        if (isMoving || dockPointerX !== null) dockFrame = requestAnimationFrame(animateDock);
+      };
+      const startDockAnimation = () => { if (!dockFrame) dockFrame = requestAnimationFrame(animateDock); };
+      dock.addEventListener('pointermove', event => { dockPointerX = event.clientX; startDockAnimation(); });
+      dock.addEventListener('pointerleave', () => { dockPointerX = null; startDockAnimation(); });
+      dockItems.forEach(item => item.addEventListener('focus', () => { dockPointerX = item.getBoundingClientRect().left + item.getBoundingClientRect().width / 2; startDockAnimation(); }));
+      dockItems.forEach(item => item.addEventListener('blur', () => { dockPointerX = null; startDockAnimation(); }));
+    }
+    const shapes = document.querySelectorAll('[data-depth]');
+    window.addEventListener('pointermove', (event) => {
+      const x = (event.clientX / window.innerWidth - .5) * 2;
+      const y = (event.clientY / window.innerHeight - .5) * 2;
+      shapes.forEach((shape) => {
+        const depth = Number(shape.dataset.depth);
+        shape.style.translate = `${x * depth * 10}px ${y * depth * 10}px`;
+      });
+    });
+    const navLinks = [...document.querySelectorAll('.dock a')];
+    const sections = [...document.querySelectorAll('header[id], section[id]')];
+    const setActive = () => {
+      const current = sections.reduce((visible, section) => {
+        return section.getBoundingClientRect().top <= window.innerHeight * .35 ? section : visible;
+      }, sections[0]);
+      navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${current.id}`));
+    };
+    document.addEventListener('scroll', setActive, { passive: true });
+    const hero = document.querySelector('.hero');
+    const heroInner = document.querySelector('.hero-inner');
+    const heroTrail = document.querySelector('.hero-trail');
+    const trailSources = [
+      ...Array.from({ length: 14 }, (_, index) => `assets/hero-photo-${String(index + 1).padStart(2, '0')}.jpg`),
+      'assets/hero-photo-15.png',
+      ...Array.from({ length: 5 }, (_, index) => `assets/hero-photo-${String(index + 16).padStart(2, '0')}.jpg`)
+    ];
+    let lastTrailPoint = null;
+    let trailIndex = 0;
+    let pendingPoint = null;
+    let trailFrame = 0;
+    const drawTrail = () => {
+      trailFrame = 0;
+      if (!pendingPoint) return;
+      const point = pendingPoint;
+      const bounds = hero.getBoundingClientRect();
+      const titleBounds = heroInner.getBoundingClientRect();
+      const titleArea = {
+        left: titleBounds.left - bounds.left - 210,
+        right: titleBounds.right - bounds.left + 210,
+        top: titleBounds.top - bounds.top - 150,
+        bottom: Math.min(titleBounds.bottom - bounds.top + 150, bounds.height * .56)
+      };
+      if (point.y < titleArea.top || point.y > titleArea.bottom || point.x < titleArea.left || point.x > titleArea.right) {
+        lastTrailPoint = null;
+        return;
+      }
+      if (lastTrailPoint && Math.hypot(point.x - lastTrailPoint.x, point.y - lastTrailPoint.y) < 52) return;
+      lastTrailPoint = point;
+      const image = document.createElement('img');
+      image.className = 'hero-trail-image';
+      image.src = trailSources[trailIndex % trailSources.length];
+      image.alt = '';
+      image.style.left = `${point.x}px`;
+      image.style.top = `${point.y}px`;
+      image.style.setProperty('--tilt', `${(trailIndex % 7) * 3 - 9}deg`);
+      heroTrail.appendChild(image);
+      trailIndex += 1;
+      if (heroTrail.children.length > 6) heroTrail.firstElementChild.remove();
+      window.setTimeout(() => image.remove(), 620);
+    };
+    hero.addEventListener('pointermove', (event) => {
+      const bounds = hero.getBoundingClientRect();
+      pendingPoint = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+      if (!trailFrame) trailFrame = requestAnimationFrame(drawTrail);
+    });
+    hero.addEventListener('pointerleave', () => { lastTrailPoint = null; pendingPoint = null; });
+    const projectImageSets = [
+      ['project-1-01.jpg', 'project-1-02.jpg', 'project-1-03.jpg', 'project-1-04.png', 'project-1-05.jpg', 'project-1-06.jpg', 'project-1-07.png', 'project-1-08.png'],
+      ['project-2-01.png', 'project-2-02.png', 'project-2-03.png', 'project-2-04.png', 'project-2-05.png', 'project-2-06.png', 'project-2-07.png', 'project-2-08.png', 'project-2-09.png', 'project-2-10.png', 'project-2-11.png', 'project-2-12.png', 'project-2-13.png'],
+      ['project-3-01.png', 'project-3-02.png', 'project-3-03.png', 'project-3-04.png', 'project-3-05.png', 'project-3-06.png', 'project-3-07.png', 'project-3-08.png', 'project-3-09.png', 'project-3-10.png', 'project-3-11.png', 'project-3-12.png', 'project-3-13.png', 'project-3-14.png', 'project-3-15.png', 'project-3-16.png', 'project-3-17.png', 'project-3-18.png', 'project-3-19.png'],
+      ['project-4-01.png', 'project-4-02.png', 'project-4-03.png', 'project-4-04.png', 'project-4-05.png', 'project-4-06.png', 'project-4-07.png', 'project-4-08.png', 'project-4-09.png', 'project-4-10.png', 'project-4-11.png', 'project-4-12.jpg', 'project-4-13.jpg', 'project-4-14.jpg', 'project-4-15.jpg']
+    ];
+    document.querySelectorAll('.project-gallery').forEach((gallery, galleryIndex) => {
+      const track = document.createElement('div');
+      track.className = 'project-gallery-track';
+      const tiles = (projectImageSets[galleryIndex] || []).map((file, imageIndex) => {
+        const tile = document.createElement('div');
+        tile.className = 'gallery-tile project-image-tile';
+        tile.innerHTML = `<img src="assets/${file}" alt="Project ${galleryIndex + 1} image ${imageIndex + 1}" loading="lazy">`;
+        return tile;
+      });
+      [...tiles, ...tiles.map(tile => tile.cloneNode(true))].forEach(tile => track.appendChild(tile));
+      gallery.replaceChildren(track);
+    });
+    const galleryModal = document.querySelector('#photo-gallery');
+    const galleryGrid = document.querySelector('#gallery-grid');
+    const galleryTitle = document.querySelector('#gallery-title');
+    const imageViewer = document.querySelector('#image-viewer');
+    const imageViewerImg = document.querySelector('#image-viewer-img');
+    const photoGroups = [
+      { title: '这些是我给别人拍的一些照片', files: Array.from({ length: 14 }, (_, index) => `photo-${String(index + 1).padStart(2, '0')}`) },
+      { title: '这是我的一些手工作品', files: Array.from({ length: 25 }, (_, index) => `handmade-${String(index + 1).padStart(2, '0')}`) },
+      { title: '我超级爱喝奶茶（我的续命水）', files: Array.from({ length: 24 }, (_, index) => `milk-${String(index + 1).padStart(2, '0')}`) },
+      { title: '总是为路边的小猫驻足，会不会太幼稚了', files: Array.from({ length: 33 }, (_, index) => `animals-${String(index + 1).padStart(2, '0')}`) }
+    ];
+    const fileForPhoto = number => number.startsWith('photo-') ? `assets/photography-${number.slice(6)}.jpg` : `assets/${number}.jpg`;
+    const fileForGroupPhoto = number => number === '15' ? 'assets/hero-photo-15.png' : fileForPhoto(number);
+    const closeGallery = () => {
+      galleryModal.classList.remove('is-open');
+      galleryModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('gallery-open');
+    };
+    const openGallery = index => {
+      const group = photoGroups[index];
+      if (!group) return;
+      galleryTitle.textContent = group.title;
+      galleryGrid.innerHTML = group.files.map((number, itemIndex) => `<button class="masonry-card" type="button" style="animation-delay:${itemIndex * .06}s"><img src="${fileForGroupPhoto(number)}" alt="${group.title} ${itemIndex + 1}" /></button>`).join('');
+      galleryGrid.querySelectorAll('.masonry-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const image = card.querySelector('img');
+          imageViewerImg.src = image.src;
+          imageViewerImg.alt = image.alt;
+          imageViewer.classList.add('is-open');
+          imageViewer.setAttribute('aria-hidden', 'false');
+        });
+      });
+      galleryModal.classList.add('is-open');
+      galleryModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('gallery-open');
+    };
+    document.querySelectorAll('.sticker-image[data-gallery]').forEach(sticker => {
+      const activate = () => openGallery(Number(sticker.dataset.gallery));
+      sticker.addEventListener('click', activate);
+      sticker.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); } });
+    });
+    document.querySelectorAll('[data-close-gallery]').forEach(element => element.addEventListener('click', closeGallery));
+    document.querySelector('.image-viewer-close').addEventListener('click', () => {
+      imageViewer.classList.remove('is-open');
+      imageViewer.setAttribute('aria-hidden', 'true');
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      imageViewer.classList.remove('is-open');
+      imageViewer.setAttribute('aria-hidden', 'true');
+      closeGallery();
+    });
+    const internshipData = [
+      {
+        title: '酷乐潮玩｜账号运营实习生',
+        time: '时间：2026.5-2026.10',
+        image: 'assets/about-image-1.jpg',
+        alt: '酷乐潮玩项目图',
+        copy: '负责波点猫、豚豚崽小助手全平台 IP 账号运营，运用 PS、Illustrator 及 AI 生成工具完成图文内容创作与发布。协助酷乐潮玩官号及旗下多个 IP 账号，完成视频、动画素材剪辑制作；参与节日、营销活动海报设计输出。完整参与从内容策划、素材生产、编辑发布的工作链路，兼顾 IP 内容产出与品牌视觉物料输出，熟悉潮玩 IP 线上内容调性，提升多平台内容生产与视觉设计落地能力。'
+      },
+      {
+        title: '领养日｜视觉设计实习生',
+        time: '时间：2025.09-至今',
+        image: 'assets/about-image-2.png',
+        alt: '领养日项目图',
+        copy: '主导领养日公益活动主 KV 设计，输出海报、宣传物料等全套视觉延展素材。把控设计输出规范，跟进物料打样、印刷全流程，保障设计物料顺利落地执行。参与线下活动现场相关支持事宜，对接多方需求，协调解决物料落地过程中的各类问题。在公益项目中锻炼视觉方案输出、跨方沟通能力，兼顾设计美感与实际场景使用需求，积累完整从设计到线下落地的项目实操经验。'
+      },
+      {
+        title: '慢回弹外贸公司｜运营剪辑实习生',
+        time: '时间：2024.07-2024.9',
+        image: 'assets/company-reference.jpg',
+        alt: '金华昭宏工艺品有限公司项目图',
+        copy: '身兼多岗，负责海外账号运营，主打“捏捏 + ASMR”产品短视频策划剪辑，产出适配海外平台的产品同内容。兼顾外贸业务辅助工作，处理订单跟单对接，完成财务月度数据核算、统计工作。工作内容跨度大，同时承接内容创作、业务对接、数据计算类任务，锻炼多任务处理能力，熟悉慢回弹品类特性，理解外贸视角下内容产出与业务之间的联动逻辑。'
+      }
+    ];
+    const internshipBoard = document.querySelector('.about-v3-images');
+    const internshipDetail = document.querySelector('#internship-detail');
+    const internshipTitle = document.querySelector('#internship-title');
+    const internshipTime = document.querySelector('#internship-time');
+    const internshipCopy = document.querySelector('#internship-copy');
+    const internshipDetailImage = document.querySelector('#internship-detail-image');
+    const closeInternshipDetail = () => {
+      internshipBoard.classList.remove('has-detail');
+      internshipBoard.querySelectorAll('.internship-trigger').forEach(trigger => trigger.classList.remove('is-active'));
+      internshipDetail.classList.remove('is-open');
+      internshipDetail.setAttribute('aria-hidden', 'true');
+    };
+    const openInternshipDetail = index => {
+      const item = internshipData[index];
+      const trigger = internshipBoard.querySelector(`[data-internship="${index}"]`);
+      if (!item || !trigger) return;
+      internshipTitle.textContent = item.title;
+      internshipTime.textContent = item.time;
+      internshipCopy.textContent = item.copy;
+      internshipDetailImage.src = item.image;
+      internshipDetailImage.alt = item.alt;
+      internshipBoard.classList.add('has-detail');
+      internshipBoard.querySelectorAll('.internship-trigger').forEach(node => node.classList.toggle('is-active', node === trigger));
+      internshipDetail.classList.add('is-open');
+      internshipDetail.setAttribute('aria-hidden', 'false');
+    };
+    internshipBoard.querySelectorAll('.internship-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => openInternshipDetail(Number(trigger.dataset.internship)));
+    });
+    internshipDetail.querySelector('.internship-detail-close').addEventListener('click', closeInternshipDetail);
+    const toolRows = document.querySelectorAll('.tool-row');
+    if (toolRows.length >= 2) {
+      toolRows[0].innerHTML = '<span class="tool-row-label">软件技能：</span><span class="tool-icon ps">PS</span><span class="tool-icon ai">Illustrator</span><span class="tool-icon davinci">达芬奇</span><span class="tool-icon jianying">剪映</span><span class="tool-icon blender">Blender</span><span class="tool-icon drone">无人机CAAC执照</span>';
+      toolRows[1].innerHTML = '<span class="tool-row-label">AI 工具：</span><span class="tool-icon chatgpt">ChatGPT</span><span class="tool-icon codex">Codex</span><span class="tool-icon deepsider">deepsider</span><span class="tool-icon lovart">lovart</span><span class="tool-icon tapnow">Tapnow</span><span class="tool-icon jimeng">即梦</span>';
+    }
+  </script>
+</body>
+</html>
