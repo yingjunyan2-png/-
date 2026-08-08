@@ -7,6 +7,13 @@
   <meta name="description" content="A playful, minimal portfolio preview for an independent designer." />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&display=swap');
+    @font-face {
+      font-family: "YingJunyanHand";
+      src: url("assets/fonts/ying-junyan-hand.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
     :root {
       --ink: #171717;
       --muted: #77736d;
@@ -75,7 +82,7 @@
     .masonry-modal.is-open { visibility: visible; opacity: 1; pointer-events: auto; }
     .masonry-backdrop { position: absolute; inset: 0; background: rgba(255,255,255,.70); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); }
     .masonry-dialog { position: relative; width: min(1180px, 100%); height: min(82vh, 820px); overflow: auto; padding: 28px; background: rgba(255,255,255,.70); backdrop-filter: blur(14px) saturate(115%); -webkit-backdrop-filter: blur(14px) saturate(115%); border: 1px solid rgba(255,255,255,.82); border-radius: 18px; box-shadow: 0 24px 70px rgba(23,23,23,.14), inset 0 1px 0 rgba(255,255,255,.75); }
-    .masonry-dialog h3 { margin: 0 0 22px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 30px; }
+    .masonry-dialog h3 { margin: 0 0 22px; font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 30px; }
     .masonry-close { position: absolute; top: 18px; right: 20px; width: 34px; height: 34px; border: 1px solid var(--ink); border-radius: 50%; background: #fff; cursor: pointer; font-size: 20px; line-height: 1; }
     .masonry-grid { columns: 4 190px; column-gap: 14px; }
     .masonry-card { display: block; width: 100%; border: 0; padding: 0; background: transparent; text-align: left; break-inside: avoid; margin: 0 0 14px; cursor: zoom-in; opacity: 0; transform: translateY(34px) scale(.96); animation: masonryIn .65s cubic-bezier(.22,.61,.36,1) forwards; }
@@ -93,7 +100,7 @@
       font-weight: 700;
       max-width: none;
       margin: 0;
-      font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", "DFKai-SB", cursive;
+      font-family: "YingJunyanHand", "KaiTi", "STKaiti", "DFKai-SB", cursive;
     }
     .hero h1 em { font-style: normal; color: var(--ink); }
     .hero-meta { display: none; }
@@ -121,8 +128,8 @@
     .section-head {
       display: block; text-align: center; margin-bottom: 54px;
     }
-    .section-label { font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", cursive; font-size: 18px; letter-spacing: .04em; color: var(--muted); }
-    h2 { font-size: clamp(50px, 8vw, 104px); letter-spacing: .02em; line-height: .95; margin: 10px 0 0; font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", "STKaiti", cursive; font-weight: 700; }
+    .section-label { font-family: "YingJunyanHand", "KaiTi", "STKaiti", cursive; font-size: 18px; letter-spacing: .04em; color: var(--muted); }
+    h2 { font-size: clamp(50px, 8vw, 104px); letter-spacing: .02em; line-height: .95; margin: 10px 0 0; font-family: "YingJunyanHand", "KaiTi", "STKaiti", cursive; font-weight: 700; }
     .section-note { max-width: 420px; margin: 20px auto 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
     .project-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 24px; margin: -20px auto 48px; font-family: "Patrick Hand", "KaiTi", cursive; font-size: 17px; }
@@ -148,8 +155,8 @@
     .work-grid { display: none; }
     .project-grid-v2 { display: grid; gap: 78px; }
     .project-row { display: grid; grid-template-columns: minmax(250px, .9fr) minmax(260px, 1fr); gap: 36px 6vw; padding-top: 34px; border-top: 1px solid var(--ink); }
-    .project-copy h3 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(32px, 3.6vw, 56px); line-height: .98; margin: 0 0 16px; font-weight: 700; }
-    .project-intro { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 18px; line-height: 1.35; margin: 0; max-width: 450px; }
+    .project-copy h3 { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: clamp(32px, 3.6vw, 56px); line-height: .98; margin: 0 0 16px; font-weight: 700; }
+    .project-intro { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 18px; line-height: 1.35; margin: 0; max-width: 450px; }
     .project-details { display: grid; grid-template-columns: 1fr; gap: 24px; padding-top: 5px; max-width: 600px; }
     .project-details p { font-size: 14px; line-height: 1.65; margin: 0; max-width: 600px; }
     .project-details p:nth-child(2) { display: none; }
@@ -170,19 +177,19 @@
     .about-layout { display: none; }
     .about-board { display: grid; grid-template-columns: 1.15fr .72fr 1fr; grid-template-rows: auto auto auto; gap: 18px; position: relative; max-width: 1280px; margin: 0 auto; }
     .about-board > div { min-height: 180px; border-radius: 12px; padding: 28px; position: relative; overflow: visible; }
-    .about-board h3 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 28px; line-height: 1; margin: 0 0 18px; }
+    .about-board h3 { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 28px; line-height: 1; margin: 0 0 18px; }
     .about-board p { font-size: 14px; line-height: 1.45; max-width: 360px; margin: 0 0 14px; }
     .about-black { background: #171717; color: #fff; grid-column: 1 / 3; grid-row: 1 / 3; min-height: 350px !important; padding: 44px !important; }
     .about-black h3 { font-size: clamp(36px, 5vw, 74px); max-width: 520px; }
     .about-black p { max-width: 500px; color: rgba(255,255,255,.78); }
     .about-green { background: #39b84a; grid-column: 1; grid-row: 3; }
     .about-red { background: #ff2b31; grid-column: 3; grid-row: 1 / 3; min-height: 350px !important; display: grid; place-items: center; transform: rotate(-4deg); z-index: 2; }
-    .photo-placeholder { width: 72%; aspect-ratio: .78; background: #ff6d65; border: 2px solid var(--ink); display: grid; place-items: center; text-align: center; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 30px; line-height: .9; }
+    .photo-placeholder { width: 72%; aspect-ratio: .78; background: #ff6d65; border: 2px solid var(--ink); display: grid; place-items: center; text-align: center; font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 30px; line-height: .9; }
     .paperclip { position: absolute; width: 34px; height: 112px; border: 6px solid #ffd1dc; border-bottom: 0; border-radius: 20px 20px 0 0; left: 14%; top: -34px; transform: rotate(-12deg); }
     .about-yellow { background: #ffe27a; grid-column: 2; grid-row: 3; display: flex; flex-wrap: wrap; align-content: center; gap: 10px; }
-    .about-yellow span { background: #fff3b5; border-radius: 999px; padding: 10px 14px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 17px; }
+    .about-yellow span { background: #fff3b5; border-radius: 999px; padding: 10px 14px; font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 17px; }
     .about-purple { background: #6c35a5; color: #fff; grid-column: 3; grid-row: 3; }
-    .about-purple p { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 25px; line-height: 1.05; }
+    .about-purple p { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 25px; line-height: 1.05; }
     .about-blue { background: #2faae0; grid-column: 1 / 3; grid-row: 4; min-height: 170px !important; }
     .about-blue h3 { margin-bottom: 10px; }
     .board-kicker, .board-date { display: block; font-size: 11px; letter-spacing: .08em; margin-bottom: 20px; }
@@ -194,19 +201,19 @@
     .about-v3-photo { width: 100%; max-width: 430px; aspect-ratio: .82; background: #ff2b31 url("assets/profile.webp") center / cover no-repeat; display: block; position: relative; transform: rotate(-3deg); border: 2px solid var(--ink); z-index: 1; }
     .about-v3-photo::before { content: none; }
     .about-v3-copy { max-width: 650px; min-height: 260px; }
-    .about-v3-copy p { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(26px, 3.3vw, 48px); line-height: 1.08; margin: 0 0 28px; }
+    .about-v3-copy p { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: clamp(26px, 3.3vw, 48px); line-height: 1.08; margin: 0 0 28px; }
     .about-v3-copy p + p { color: var(--muted); font-family: Arial, "Microsoft YaHei", sans-serif; font-size: 16px; line-height: 1.55; max-width: 460px; }
     .about-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 24px; }
     .about-tags span { border: 1px solid var(--ink); border-radius: 999px; padding: 8px 13px; font-size: 12px; }
     .tag-enfp { background: #fbd0df; }
     .tag-sagittarius { background: #fef5be; }
     .tag-animals { background: #c3f2fe; }
-    .self-evaluation-title { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 22px; line-height: 1; margin: 0 0 12px; }
+    .self-evaluation-title { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 22px; line-height: 1; margin: 0 0 12px; }
     .about-v3-copy p.about-bio { width: min(600px, 100%); max-width: 600px; font-family: "Inter Variable", Arial, sans-serif; font-size: 13px !important; line-height: 1.8; letter-spacing: .08em; word-spacing: .08em; background: #ffffff; margin: 0 0 28px; overflow: visible; display: block; }
     .about-bio:focus, .about-fact p:focus { background: #ffffff; }
     .about-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .about-fact { border-top: 1px solid var(--ink); padding-top: 12px; }
-    .about-fact h4 { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 22px; margin: 0 0 12px; }
+    .about-fact h4 { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 22px; margin: 0 0 12px; }
     .about-fact p { font-size: 13px; line-height: 1.5; margin: 0; outline: none; }
     .about-facts .about-fact:first-child p { max-width: 160px; font-family: "Inter Variable", Arial, sans-serif; }
     .about-v3-images { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 54px; position: relative; }
@@ -222,7 +229,7 @@
     .internship-detail { position: absolute; z-index: 5; inset: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, .8fr); gap: 24px; align-items: stretch; padding: 24px; border: 1px solid rgba(17, 17, 17, .18); border-radius: 16px; background: rgba(255, 255, 255, .94); box-shadow: 0 18px 46px rgba(17, 17, 17, .16); opacity: 0; pointer-events: none; transform: translateY(20px) scale(.97); transition: opacity .35s ease, transform .5s cubic-bezier(.22, 1, .36, 1); }
     .internship-detail.is-open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
     .internship-detail-copy { min-width: 0; align-self: center; }
-    .internship-detail-copy h5 { margin: 0 0 10px; font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(22px, 2vw, 32px); line-height: 1.05; }
+    .internship-detail-copy h5 { margin: 0 0 10px; font-family: "YingJunyanHand", "KaiTi", cursive; font-size: clamp(22px, 2vw, 32px); line-height: 1.05; }
     .internship-detail-copy .internship-time { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
     .internship-detail-copy p { margin: 0; font-family: "Inter Variable", Arial, sans-serif; font-size: 13px; line-height: 1.75; letter-spacing: .02em; }
     .internship-detail-visual { min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 12px; background: #fff; }
@@ -243,7 +250,7 @@
     .ip-section { text-align: center; }
     .ip-placeholder { width: min(82vw, 920px); aspect-ratio: 1.8 / 1; margin: 30px auto 0; border: 0; border-radius: 0; display: grid; place-items: center; background: transparent; }
     .ip-placeholder img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .ip-placeholder span { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: 28px; }
+    .ip-placeholder span { font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 28px; }
     .ip-section .section-head { display: none; }
     .ip-placeholder span { display: none; }
 
@@ -271,7 +278,7 @@
       display: flex; gap: 3px; padding: 5px; border: 1px solid var(--ink); border-radius: 999px;
       width: 340px; min-width: 0; justify-content: space-around; background: rgba(255,255,255,.34); backdrop-filter: blur(16px) saturate(120%); box-shadow: 0 7px 24px rgba(0,0,0,.08);
     }
-    .dock a { padding: 7px 10px; border-radius: 999px; white-space: nowrap; font-family: "方正字迹-新手书", "FZShouJinShu-S10S", "KaiTi", cursive; font-size: 13px; transition: background .2s ease; }
+    .dock a { padding: 7px 10px; border-radius: 999px; white-space: nowrap; font-family: "YingJunyanHand", "KaiTi", cursive; font-size: 13px; transition: background .2s ease; }
     .dock a:hover, .dock a.active { background: #FFD1DC; color: var(--ink); }
     .dock a { transform-origin: center bottom; transform: translateY(0) scale(1); will-change: transform; }
     .click-spark-canvas { position: fixed; inset: 0; z-index: 30; width: 100vw; height: 100vh; display: block; pointer-events: none; user-select: none; }
