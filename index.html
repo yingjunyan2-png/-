@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
@@ -41,7 +41,7 @@
     body::before {
       opacity: .32;
       mix-blend-mode: multiply;
-      background: url("assets/texture.jpg") center / cover repeat;
+      background: url("assets/texture.webp") center / cover repeat;
     }
     body::after {
       opacity: 0;
@@ -110,10 +110,10 @@
     .hero-art { position: relative; inset: auto; z-index: 1; display: flex; align-items: flex-start; justify-content: center; gap: 14px; width: min(960px, 100%); max-width: 960px; margin: 62px auto 0; }
     .sticker-image { width: 22%; aspect-ratio: 1 / 1; display: block; object-fit: contain; background: transparent; filter: drop-shadow(4px 7px 0 rgba(23,23,23,.08)); transition: transform .3s ease; }
     .sticker-image:hover { transform: translateY(-8px) rotate(0deg); }
-    .sticker-camera { background-image: url("assets/sticker-camera.png"); transform: rotate(-4deg); clip-path: none; }
-    .sticker-medal { background-image: url("assets/sticker-medal.png"); transform: rotate(3deg) translateY(18px); }
-    .sticker-cup { background-image: url("assets/sticker-cup.png"); transform: rotate(-2deg) translateY(6px); }
-    .sticker-cat { background-image: url("assets/sticker-cat.png"); transform: rotate(5deg) translateY(22px); clip-path: polygon(0 0, 100% 0, 100% 84%, 94% 84%, 94% 100%, 0 100%); }
+    .sticker-camera { background-image: url("assets/sticker-camera.webp"); transform: rotate(-4deg); clip-path: none; }
+    .sticker-medal { background-image: url("assets/sticker-medal.webp"); transform: rotate(3deg) translateY(18px); }
+    .sticker-cup { background-image: url("assets/sticker-cup.webp"); transform: rotate(-2deg) translateY(6px); }
+    .sticker-cat { background-image: url("assets/sticker-cat.webp"); transform: rotate(5deg) translateY(22px); clip-path: polygon(0 0, 100% 0, 100% 84%, 94% 84%, 94% 100%, 0 100%); }
     .sticker-image { background-image: none !important; }
 
     main { padding-bottom: 140px; }
@@ -191,7 +191,7 @@
     .about-board { display: none; }
     .about-v3 { max-width: 1280px; margin: 0 auto; }
     .about-v3-top { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(320px, 1.2fr); gap: 7vw; align-items: center; }
-    .about-v3-photo { width: 100%; max-width: 430px; aspect-ratio: .82; background: #ff2b31 url("assets/profile.jpg") center / cover no-repeat; display: block; position: relative; transform: rotate(-3deg); border: 2px solid var(--ink); z-index: 1; }
+    .about-v3-photo { width: 100%; max-width: 430px; aspect-ratio: .82; background: #ff2b31 url("assets/profile.webp") center / cover no-repeat; display: block; position: relative; transform: rotate(-3deg); border: 2px solid var(--ink); z-index: 1; }
     .about-v3-photo::before { content: none; }
     .about-v3-copy { max-width: 650px; min-height: 260px; }
     .about-v3-copy p { font-family: "方正字迹-新手书", "KaiTi", cursive; font-size: clamp(26px, 3.3vw, 48px); line-height: 1.08; margin: 0 0 28px; }
@@ -334,10 +334,10 @@
       </div>
       <div class="hero-trail" aria-hidden="true"></div>
       <div class="hero-art" aria-label="Sticker placeholders">
-        <img class="sticker-image sticker-camera" data-gallery="0" src="assets/sticker-camera.png" alt="Camera illustration, open photo gallery" tabindex="0" />
-        <img class="sticker-image sticker-medal" data-gallery="1" src="assets/sticker-medal.png" alt="Medal illustration, open photo gallery" tabindex="0" />
-        <img class="sticker-image sticker-cup" data-gallery="2" src="assets/sticker-cup.png" alt="Milk tea illustration, open photo gallery" tabindex="0" />
-        <img class="sticker-image sticker-cat" data-gallery="3" src="assets/sticker-cat.png" alt="Cat illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-camera" data-gallery="0" src="assets/sticker-camera.webp" alt="Camera illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-medal" data-gallery="1" src="assets/sticker-medal.webp" alt="Medal illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-cup" data-gallery="2" src="assets/sticker-cup.webp" alt="Milk tea illustration, open photo gallery" tabindex="0" />
+        <img class="sticker-image sticker-cat" data-gallery="3" src="assets/sticker-cat.webp" alt="Cat illustration, open photo gallery" tabindex="0" />
       </div>
     </header>
     <div class="masonry-modal" id="photo-gallery" aria-hidden="true">
@@ -388,9 +388,9 @@
         <div class="about-v3">
           <div class="about-v3-top"><div class="about-v3-photo" role="img" aria-label="Ying Junyan portrait"></div><div class="about-v3-copy"><div class="about-tags"><span class="tag-enfp">ENFP</span><span class="tag-sagittarius">射手座</span><span class="tag-animals">热爱小动物</span></div><h4 class="self-evaluation-title">Self-evaluation</h4><p class="about-bio" contenteditable="true">我叫应君艳，你可以叫我小应，视觉传达专业毕业，熟练掌握各类基础设计软件，具备视觉物料从设计到落地的实操经验，同时拥有潮玩 IP 账号运营实战经历。能够独立完成完整工作链路，覆盖内容策划、实物拍摄、AI 素材生成、后期输出以及数据复盘，搭建闭环个人工作流。工作中思路清晰，善于沟通表达，拥有较强学习能力，面对任务可以主动发现、分析并解决实际问题，做事注重落地实效。性格活泼开朗大方，善于与人协作，能够较好适配团队工作氛围。对待设计与运营工作兼具创意思维与复盘意识，愿意持续吸收新方法。对新鲜事物保持敏感，能快速上手AI工具辅助内容生产。</p><div class="about-facts"><div class="about-fact"><h4>Education</h4><p contenteditable="true">浙江万里学院（2027毕业）视觉传达专业</p></div><div class="about-fact"><h4>Skills</h4><div class="tool-grid"><div class="tool-row"><span class="tool-icon ps">Ps</span><span class="tool-icon ai">Ai</span><span class="tool-icon davinci">DaV</span><span class="tool-icon jianying">剪映</span><span class="tool-icon blender">Bl</span></div><div class="tool-row"><span class="tool-icon chatgpt">ChatGPT</span><span class="tool-icon codex">Codex</span><span class="tool-icon deepsider">deepsider</span><span class="tool-icon lovart">lovart</span><span class="tool-icon tapnow">Tapnow</span><span class="tool-icon jimeng">即梦</span></div></div></div></div></div></div>
           <div class="about-v3-images" aria-label="实习经历">
-            <button class="internship-trigger image-a" type="button" data-internship="0" aria-label="查看酷乐潮玩实习经历"><img class="about-v3-image" src="assets/about-image-1.jpg" alt="酷乐潮玩项目图" /></button>
-            <button class="internship-trigger image-b" type="button" data-internship="1" aria-label="查看领养日实习经历"><img class="about-v3-image" src="assets/about-image-2.png" alt="领养日项目图" /></button>
-            <button class="internship-trigger image-c" type="button" data-internship="2" aria-label="查看外贸公司实习经历"><img class="about-v3-image" src="assets/company-reference.jpg" alt="金华昭宏工艺品有限公司项目图" /></button>
+            <button class="internship-trigger image-a" type="button" data-internship="0" aria-label="查看酷乐潮玩实习经历"><img class="about-v3-image" src="assets/about-image-1.webp" alt="酷乐潮玩项目图" /></button>
+            <button class="internship-trigger image-b" type="button" data-internship="1" aria-label="查看领养日实习经历"><img class="about-v3-image" src="assets/about-image-2.webp" alt="领养日项目图" /></button>
+            <button class="internship-trigger image-c" type="button" data-internship="2" aria-label="查看外贸公司实习经历"><img class="about-v3-image" src="assets/company-reference.webp" alt="金华昭宏工艺品有限公司项目图" /></button>
             <aside class="internship-detail" id="internship-detail" aria-hidden="true">
               <button class="internship-detail-close" type="button" aria-label="关闭实习经历">×</button>
               <div class="internship-detail-copy"><h5 id="internship-title"></h5><p class="internship-time" id="internship-time"></p><p id="internship-copy" contenteditable="true"></p></div>
@@ -405,7 +405,7 @@
       </section>
       <section class="section ip-section" id="ip">
         <div class="section-head"><div><div class="section-label">04 / A little character</div><h2>My IP</h2></div><p class="section-note">这里预留给未来的 IP 形象，之后替换成你的图片即可。</p></div>
-        <div class="ip-placeholder"><img src="assets/ip-thanks.png" alt="Thank you illustration" /></div>
+        <div class="ip-placeholder"><img src="assets/ip-thanks.webp" alt="Thank you illustration" /></div>
       </section>
     </main>
     <footer class="footer"><span>© 2026 Ying Junyan</span><span>Made with curiosity</span></footer>
@@ -512,9 +512,9 @@
     const heroInner = document.querySelector('.hero-inner');
     const heroTrail = document.querySelector('.hero-trail');
     const trailSources = [
-      ...Array.from({ length: 14 }, (_, index) => `assets/hero-photo-${String(index + 1).padStart(2, '0')}.jpg`),
-      'assets/hero-photo-15.png',
-      ...Array.from({ length: 5 }, (_, index) => `assets/hero-photo-${String(index + 16).padStart(2, '0')}.jpg`)
+      ...Array.from({ length: 14 }, (_, index) => `assets/hero-photo-${String(index + 1).padStart(2, '0')}.webp`),
+      'assets/hero-photo-15.webp',
+      ...Array.from({ length: 5 }, (_, index) => `assets/hero-photo-${String(index + 16).padStart(2, '0')}.webp`)
     ];
     let lastTrailPoint = null;
     let trailIndex = 0;
@@ -557,10 +557,10 @@
     });
     hero.addEventListener('pointerleave', () => { lastTrailPoint = null; pendingPoint = null; });
     const projectImageSets = [
-      ['project-1-01.jpg', 'project-1-02.jpg', 'project-1-03.jpg', 'project-1-04.png', 'project-1-05.jpg', 'project-1-06.jpg', 'project-1-07.png', 'project-1-08.png'],
-      ['project-2-01.png', 'project-2-02.png', 'project-2-03.png', 'project-2-04.png', 'project-2-05.png', 'project-2-06.png', 'project-2-07.png', 'project-2-08.png', 'project-2-09.png', 'project-2-10.png', 'project-2-11.png', 'project-2-12.png', 'project-2-13.png'],
-      ['project-3-01.png', 'project-3-02.png', 'project-3-03.png', 'project-3-04.png', 'project-3-05.png', 'project-3-06.png', 'project-3-07.png', 'project-3-08.png', 'project-3-09.png', 'project-3-10.png', 'project-3-11.png', 'project-3-12.png', 'project-3-13.png', 'project-3-14.png', 'project-3-15.png', 'project-3-16.png', 'project-3-17.png', 'project-3-18.png', 'project-3-19.png'],
-      ['project-4-01.png', 'project-4-02.png', 'project-4-03.png', 'project-4-04.png', 'project-4-05.png', 'project-4-06.png', 'project-4-07.png', 'project-4-08.png', 'project-4-09.png', 'project-4-10.png', 'project-4-11.png', 'project-4-12.jpg', 'project-4-13.jpg', 'project-4-14.jpg', 'project-4-15.jpg']
+      ['project-1-01.webp', 'project-1-02.webp', 'project-1-03.webp', 'project-1-04.webp', 'project-1-05.webp', 'project-1-06.webp', 'project-1-07.webp', 'project-1-08.webp'],
+      ['project-2-01.webp', 'project-2-02.webp', 'project-2-03.webp', 'project-2-04.webp', 'project-2-05.webp', 'project-2-06.webp', 'project-2-07.webp', 'project-2-08.webp', 'project-2-09.webp', 'project-2-10.webp', 'project-2-11.webp', 'project-2-12.webp', 'project-2-13.webp'],
+      ['project-3-01.webp', 'project-3-02.webp', 'project-3-03.webp', 'project-3-04.webp', 'project-3-05.webp', 'project-3-06.webp', 'project-3-07.webp', 'project-3-08.webp', 'project-3-09.webp', 'project-3-10.webp', 'project-3-11.webp', 'project-3-12.webp', 'project-3-13.webp', 'project-3-14.webp', 'project-3-15.webp', 'project-3-16.webp', 'project-3-17.webp', 'project-3-18.webp', 'project-3-19.webp'],
+      ['project-4-01.webp', 'project-4-02.webp', 'project-4-03.webp', 'project-4-04.webp', 'project-4-05.webp', 'project-4-06.webp', 'project-4-07.webp', 'project-4-08.webp', 'project-4-09.webp', 'project-4-10.webp', 'project-4-11.webp', 'project-4-12.webp', 'project-4-13.webp', 'project-4-14.webp', 'project-4-15.webp']
     ];
     document.querySelectorAll('.project-gallery').forEach((gallery, galleryIndex) => {
       const track = document.createElement('div');
@@ -585,8 +585,8 @@
       { title: '我超级爱喝奶茶（我的续命水）', files: Array.from({ length: 24 }, (_, index) => `milk-${String(index + 1).padStart(2, '0')}`) },
       { title: '总是为路边的小猫驻足，会不会太幼稚了', files: Array.from({ length: 33 }, (_, index) => `animals-${String(index + 1).padStart(2, '0')}`) }
     ];
-    const fileForPhoto = number => number.startsWith('photo-') ? `assets/photography-${number.slice(6)}.jpg` : `assets/${number}.jpg`;
-    const fileForGroupPhoto = number => number === '15' ? 'assets/hero-photo-15.png' : fileForPhoto(number);
+    const fileForPhoto = number => number.startsWith('photo-') ? `assets/photography-${number.slice(6)}.webp` : `assets/${number}.webp`;
+    const fileForGroupPhoto = number => number === '15' ? 'assets/hero-photo-15.webp' : fileForPhoto(number);
     const closeGallery = () => {
       galleryModal.classList.remove('is-open');
       galleryModal.setAttribute('aria-hidden', 'true');
@@ -630,21 +630,21 @@
       {
         title: '酷乐潮玩｜账号运营实习生',
         time: '时间：2026.5-2026.10',
-        image: 'assets/about-image-1.jpg',
+        image: 'assets/about-image-1.webp',
         alt: '酷乐潮玩项目图',
         copy: '负责波点猫、豚豚崽小助手全平台 IP 账号运营，运用 PS、Illustrator 及 AI 生成工具完成图文内容创作与发布。协助酷乐潮玩官号及旗下多个 IP 账号，完成视频、动画素材剪辑制作；参与节日、营销活动海报设计输出。完整参与从内容策划、素材生产、编辑发布的工作链路，兼顾 IP 内容产出与品牌视觉物料输出，熟悉潮玩 IP 线上内容调性，提升多平台内容生产与视觉设计落地能力。'
       },
       {
         title: '领养日｜视觉设计实习生',
         time: '时间：2025.09-至今',
-        image: 'assets/about-image-2.png',
+        image: 'assets/about-image-2.webp',
         alt: '领养日项目图',
         copy: '主导领养日公益活动主 KV 设计，输出海报、宣传物料等全套视觉延展素材。把控设计输出规范，跟进物料打样、印刷全流程，保障设计物料顺利落地执行。参与线下活动现场相关支持事宜，对接多方需求，协调解决物料落地过程中的各类问题。在公益项目中锻炼视觉方案输出、跨方沟通能力，兼顾设计美感与实际场景使用需求，积累完整从设计到线下落地的项目实操经验。'
       },
       {
         title: '慢回弹外贸公司｜运营剪辑实习生',
         time: '时间：2024.07-2024.9',
-        image: 'assets/company-reference.jpg',
+        image: 'assets/company-reference.webp',
         alt: '金华昭宏工艺品有限公司项目图',
         copy: '身兼多岗，负责海外账号运营，主打“捏捏 + ASMR”产品短视频策划剪辑，产出适配海外平台的产品同内容。兼顾外贸业务辅助工作，处理订单跟单对接，完成财务月度数据核算、统计工作。工作内容跨度大，同时承接内容创作、业务对接、数据计算类任务，锻炼多任务处理能力，熟悉慢回弹品类特性，理解外贸视角下内容产出与业务之间的联动逻辑。'
       }
